@@ -5,6 +5,8 @@ const bcrypt = require("bcrypt");
 const session = require("express-session");
 const flash = require("express-flash");
 const passport = require("passport");
+const axios = require('axios');
+
 
 const initializePassport = require("./passportConfig");
 
@@ -29,6 +31,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(flash());
+
+// Serve static files from the 'public' directory
+app.use(express.static('public'));
 
 app.get("/", (req, res) => {
   res.render("index");
@@ -143,6 +148,18 @@ function checkNotAuthenticated(req, res, next) {
 
     res.redirect("/users/login");
 }
+
+app.get('/search', async (req, res) => {
+    const searchQuery = req.query.q;
+    const response = await axios.get('http://www.omdbapi.com/', {
+        params: {
+            apikey: '6f140aea', // make sure to replace this with your actual API key
+            s: searchQuery,
+        }
+    });
+    res.json(response.data.Search);
+});
+
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
