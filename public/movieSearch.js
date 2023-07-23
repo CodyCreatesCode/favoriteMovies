@@ -34,7 +34,9 @@ document.addEventListener('DOMContentLoaded', function () {
         document.querySelectorAll('.favorite-btn').forEach(button => {
           button.addEventListener('click', function() {
               const movieId = this.getAttribute('data-movie-id');
+              console.log(movieId);
       
+              // Send the movieId to the server using fetch POST request
               fetch('/favorites', {
                   method: 'POST',
                   headers: {

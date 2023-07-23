@@ -1,15 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css" integrity="sha512-5fsy+3xG8N/1PV5MIJz9ZsWpkltijBI48gBzQ/Z2eVATePGHOkMIn+xTDHIfTZFVb9GMpflF2wOWItqxAP2oLQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css"
+      integrity="sha512-5fsy+3xG8N/1PV5MIJz9ZsWpkltijBI48gBzQ/Z2eVATePGHOkMIn+xTDHIfTZFVb9GMpflF2wOWItqxAP2oLQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
     <title>Document</title>
-</head>
-<body>
-
+  </head>
+  <body>
     <a href="/users/logout">Logout</a>
     <h1>Hello <%= user.charAt(0).toUpperCase() + user.slice(1) %></h1>
 
-</body>
+    <!-- Display favorited movies here -->
+    <div class="row">
+      <% favoriteMovies.forEach(movie => { %>
+      <div class="col-lg-3 col-md-4 col-sm-6">
+        <div class="card mb-4">
+          <img
+            src="<%= movie.Poster %>"
+            class="card-img-top img-fluid"
+            alt="<%= movie.Title %>"
+          />
+          <div class="card-body">
+            <h5 class="card-title"><%= movie.Title %></h5>
+            <p class="card-text"><%= movie.Year %></p>
+            <!-- Other movie details -->
+          </div>
+        </div>
+      </div>
+      <% }) %>
+    </div>
+    
+  </body>
 </html>
