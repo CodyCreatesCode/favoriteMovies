@@ -5,19 +5,116 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" crossorigin="anonymous">
+    <!-- Add Bootstrap CSS link -->
+<link
+rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+integrity="sha512-Uea3+FL0JMUON44f6X6Aqa3yir/j1R62g13sm1X5JQnGL79P3i6tE55lUz9E6yglPNkegpFtzl5e6CkCkHtzA=="
+crossorigin="anonymous"
+referrerpolicy="no-referrer"
+/>
+
+<style>
+    body {
+      background-color: #141414;
+      color: #fff;
+    }
+  
+    /* Styling for search form */
+    .input-group {
+      background-color: #e50914;
+      border-radius: 4px;
+      padding: 10px;
+    }
+  
+    .input-group .form-control {
+      border: none;
+      background-color: #e50914;
+      color: #fff;
+      box-shadow: none;
+    }
+  
+    .input-group .form-control::placeholder {
+      color: #ccc;
+    }
+  
+    .input-group .btn-primary {
+      background-color: #e50914;
+      border: none;
+      box-shadow: none;
+    }
+  
+    /* Styling for movie cards */
+    .card {
+      background-color: #000;
+      border: none;
+      border-radius: 4px;
+      color: #fff;
+    }
+  
+    .card .card-img-top {
+      border-radius: 4px 4px 0 0;
+    }
+  
+    .card .card-body {
+      padding: 15px;
+    }
+  
+    .card .card-title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+  
+    .card .card-text {
+      font-size: 14px;
+      color: #ccc;
+    }
+  
+    /* Add more custom styles as needed */
+  </style>
+  
+
     <title>Home</title>
 </head>
 <body>
-    
-    <h1>Home</h1>
-
-    <input type="text" id="search" placeholder="Search for movies...">
-
-    <div id="movie-results"></div>
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <a href="/users/login">Login</a>
+ <!-- Netflix Logo and Movie Search Form -->
+<div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-6 col-md-8 col-sm-10">
+        <div class="d-flex justify-content-center">
+            <!-- Netflix Logo -->
+            <img
+              src="../images/netflix-logo.png"
+              alt="Netflix Logo"
+              class="img-fluid mb-4"
+              style="height: 60px;"
+            />
+        </div>
+  
+        <!-- Movie Search Form -->
+        <form>
+          <div class="input-group">
+            <input
+              type="text"
+              class="form-control"
+              id="search"
+              placeholder="Search for a movie..."
+            />
+            <button class="btn btn-primary" type="submit">Search</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Movie Results Container -->
+  <div class="container mt-5">
+    <div class="row" id="movie-results">
+      <!-- Movie cards will be dynamically added here -->
+    </div>
+  </div>
+  
 
 
     <script src="../movieSearch.js"></script>

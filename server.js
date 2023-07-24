@@ -7,6 +7,7 @@ const flash = require("express-flash");
 const passport = require("passport");
 const axios = require("axios");
 const bodyParser = require('body-parser');
+const path = require("path"); // Import the 'path' module
 
 const initializePassport = require("./passportConfig");
 
@@ -35,8 +36,8 @@ app.use(flash());
 // Middleware to parse request body as JSON
 app.use(bodyParser.json());
 
-// Serve static files from the 'public' directory
-app.use(express.static("public"));
+// Set the 'public' folder as the location for serving static files
+app.use(express.static(path.join(__dirname, "public")));
 
 app.get("/", (req, res) => {
   res.render("index");
@@ -198,15 +199,29 @@ app.get("/users/dashboard", checkNotAuthenticated, async (req, res) => {
       "SELECT * FROM user_favorites WHERE user_id = $1",
       [userId]
     );
-
-    res.render("dashboard", { 
-      user: req.user.name, 
-      favoriteMovies: favoriteMovies.rows, 
+    
+   // Fetch additional movie details from OMDB API
+   const moviePromises = favoriteMovies.rows.map(async (movie) => {
+    const response = await axios.get("http://www.omdbapi.com/", {
+      params: {
+        apikey: "6f140aea", // Replace with your actual OMDB API key
+        i: movie.movie_id,
+      },
     });
-  } catch (err) {
-    console.error("Error fetching favorited movies:", err);
-    res.status(500).send("Internal Server Error");
-  }
+    return response.data;
+  });
+
+  // Resolve all movie promises
+  const moviesWithDetails = await Promise.all(moviePromises);
+
+  res.render("dashboard", {
+    user: req.user.name,
+    favoriteMovies: moviesWithDetails,
+  });
+} catch (err) {
+  console.error("Error fetching favorited movies:", err);
+  res.status(500).send("Internal Server Error");
+}
 });
 
 
