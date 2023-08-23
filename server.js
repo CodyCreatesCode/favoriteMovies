@@ -151,7 +151,7 @@ function checkNotAuthenticated(req, res, next) {
 
 app.get("/search", async (req, res) => {
   const searchQuery = req.query.q;
-  const response = await axios.get("http://www.omdbapi.com/", {
+  const response = await axios.get("https://www.omdbapi.com/", {
     params: {
       apikey: "6f140aea", // make sure to replace this with your actual API key
       s: searchQuery,
