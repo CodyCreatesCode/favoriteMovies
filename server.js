@@ -128,7 +128,7 @@ app.post("/users/register", async (req, res) => {
 app.post(
   "/users/login",
   passport.authenticate("local", {
-    successRedirect: "/users/dashboard",
+    successRedirect: "/",
     failureRedirect: "/users/login",
     failureFlash: true,
   })
@@ -167,15 +167,8 @@ app.get("/search", async (req, res) => {
 app.post('/favorites', (req, res) => {
   const movieId = req.body.movieId;
 
-  // You can use the user ID to associate the favorite movie with the specific user.
-  // Assuming you have access to the user ID in `req.user.id`.
-  const userId = req.user.id; // Assuming you have access to the user ID in req.user.id
+  const userId = req.user.id; 
 
-  // Now, you can save the `userId` and `movieId` to your database table for favorites.
-  // Use the `pool.query` method to execute an INSERT query into your database.
-  // You should have a separate table for favorites where you store the user ID and movie ID.
-
-  // Example query (update it according to your database schema):
   pool.query(
     `INSERT INTO user_favorites (user_id, movie_id) VALUES ($1, $2)`,
     [userId, movieId],
@@ -202,7 +195,7 @@ app.get("/users/dashboard", checkNotAuthenticated, async (req, res) => {
     
    // Fetch additional movie details from OMDB API
    const moviePromises = favoriteMovies.rows.map(async (movie) => {
-    const response = await axios.get("http://www.omdbapi.com/", {
+    const response = await axios.get("https://www.omdbapi.com/", {
       params: {
         apikey: "6f140aea", // Replace with your actual OMDB API key
         i: movie.movie_id,
@@ -223,6 +216,35 @@ app.get("/users/dashboard", checkNotAuthenticated, async (req, res) => {
   res.status(500).send("Internal Server Error");
 }
 });
+
+
+
+app.post("/favorites/remove", (req, res) => {
+  const movieId = req.body.movieId;
+  const userId = req.user.id; // Assuming you have access to the logged-in user's ID
+
+  // Now, you can execute a DELETE query to remove the favorite movie from the database.
+  // Use the `pool.query` method to execute the DELETE query.
+  // You should have a separate table for favorites where you store the user ID and movie ID.
+
+  // Example query (update it according to your database schema):
+  pool.query(
+    `DELETE FROM user_favorites WHERE user_id = $1 AND movie_id = $2`,
+    [userId, movieId],
+    (err, results) => {
+      if (err) {
+        console.error('Error removing favorite movie:', err);
+        res.status(500).json({ error: 'Failed to remove favorite movie' });
+      } else {
+        res.sendStatus(200);
+      }
+    }
+  );
+});
+
+
+
+
 
 
 app.listen(PORT, () => {

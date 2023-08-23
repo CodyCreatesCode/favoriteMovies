@@ -10,11 +10,53 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      crossorigin="anonymous"
+    />
+    <!-- Add Bootstrap CSS link -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="../css/styles.css" />
     <title>Document</title>
   </head>
   <body>
-    <a href="/users/logout">Logout</a>
-    <h1>Hello <%= user.charAt(0).toUpperCase() + user.slice(1) %></h1>
+    <!-- Navigation menu -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container">
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto align-items-cente">
+            <li class="nav-item">
+              <a class="nav-link" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/users/logout">Logout</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Center the "FAVORITES" heading -->
+    <div class="container text-center mt-4">
+      <h1>FAVORITES</h1>
+    </div>
 
     <!-- Display favorited movies here -->
     <div class="row">
@@ -30,11 +72,45 @@
             <h5 class="card-title"><%= movie.Title %></h5>
             <p class="card-text"><%= movie.Year %></p>
             <!-- Other movie details -->
+            <button
+              class="btn btn-danger remove-btn"
+              data-movie-id="<%= movie.imdbID %>"
+            >
+              REMOVE</button
+            ><!-- Favorite button with the movie ID stored in a data attribute -->
           </div>
         </div>
       </div>
       <% }) %>
     </div>
-    
+
+    <script>
+      document.querySelectorAll(".remove-btn").forEach((button) => {
+        button.addEventListener("click", function () {
+          const movieId = this.getAttribute("data-movie-id");
+          console.log(movieId);
+
+          // Send the movieId to the server using fetch POST request to remove the movie from favorites
+          fetch("/favorites/remove", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              movieId: movieId,
+            }),
+          }).then((response) => {
+            if (response.ok) {
+              // If the removal is successful, remove the movie card from the dashboard
+              const movieCard = this.closest(".col-lg-3"); // Find the parent movie card
+              movieCard.remove(); // Remove the movie card from the dashboard
+              alert("Movie removed from favorites!");
+            } else {
+              alert("Failed to remove movie from favorites.");
+            }
+          });
+        });
+      });
+    </script>
   </body>
 </html>
