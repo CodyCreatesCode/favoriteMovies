@@ -1,4 +1,8 @@
-require('dotenv').config();
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config();
+} else {
+    require('dotenv').config({ path: '/etc/secrets/.env' });
+}
 
 const { Pool } = require("pg");
 
