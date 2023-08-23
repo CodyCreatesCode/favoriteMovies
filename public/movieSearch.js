@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
     searchInput.addEventListener('keyup', function (event) {
       let searchQuery = event.target.value;
   
-      fetch(`http://www.omdbapi.com/?apikey=6f140aea&s=${searchQuery}`)
+      fetch(`https://www.omdbapi.com/?apikey=6f140aea&s=${searchQuery}`)
     .then((response) => response.json())
     .then((data) => {
       if (data.Search && Array.isArray(data.Search)) {
